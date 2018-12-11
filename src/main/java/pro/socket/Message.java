@@ -1,5 +1,7 @@
 package pro.socket;
 
+import java.time.LocalDateTime;
+
 /**
  * Created by george on 02.12.18.
  */
@@ -7,6 +9,7 @@ public class Message {
 
     private String from;
     private String text;
+  //  private LocalDateTime dateTime;
 
     public Message() {
     }
