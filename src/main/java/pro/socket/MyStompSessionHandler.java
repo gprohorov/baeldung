@@ -4,10 +4,12 @@ package pro.socket;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
@@ -20,6 +22,8 @@ import java.time.LocalDateTime;
  * @author Kalyan
  *
  */
+@Component
+@ComponentScan
 public class MyStompSessionHandler extends StompSessionHandlerAdapter {
 
     private Logger logger = LogManager.getLogger(MyStompSessionHandler.class);
@@ -36,14 +40,18 @@ public class MyStompSessionHandler extends StompSessionHandlerAdapter {
         int i =0;
         while (session.isConnected()) {
             session.send("/app/chat", getSampleMessage());
+        //    exchange.getQueue().offer(getSampleMessage().getText());
             try {
-                Thread.sleep(2000);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            logger.info("Message sent to websocket server");
+            logger.info("Message sent to websocket server " + i);
             i++;
-            if (i==12) session.disconnect();
+            if (i==12) {
+                session.disconnect();
+            //    System.out.println(exchange.getQueue().size());
+            }
         }
     }
 
@@ -62,7 +70,7 @@ public class MyStompSessionHandler extends StompSessionHandlerAdapter {
     public void handleFrame(StompHeaders headers, Object payload) {
         Message msg = (Message) payload;
         logger.info("Received : " + msg.getText() + " from : " + msg.getFrom());
-        exchange.getQueue().add(msg.getText());
+      //  System.out.println(exchange.getQueue().offer(msg.getText()));
     }
 
     /**
