@@ -1,15 +1,10 @@
-package pro.socket;
+package pro.socket.proxy.domain;
 
-import java.time.LocalDateTime;
-
-/**
- * Created by george on 02.12.18.
- */
 public class Message {
 
     private String from;
+
     private String text;
-  //  private LocalDateTime dateTime;
 
     public Message() {
     }
